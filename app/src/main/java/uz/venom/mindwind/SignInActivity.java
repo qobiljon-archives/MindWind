@@ -34,21 +34,22 @@ public class SignInActivity extends AppCompatActivity {
     // endregion
 
     private void initialize() {
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(
                         this /* FragmentActivity */,
                         new GoogleApiClient.OnConnectionFailedListener() {
                             @Override
                             public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+                                Log.e("Connection", String.format("Connection fault: %s", connectionResult.getErrorMessage()));
                             }
                         })
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
     }
 
-    public void onGoogleSignIn(View sender) {
+    public void onGoogleSignInClick(View sender) {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
